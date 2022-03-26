@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+     <script>
+         $(document).ready(function () {
+            var table = $('#example').DataTable();
+            $('#example tbody').on('click', 'tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    var currentRow=$(this).closest("tr");
+		 var col1=currentRow.find("td:eq(0)").html();
+		 var col2=currentRow.find("td:eq(1)").html();
+		 var col3=currentRow.find("td:eq(2)").html();
+		 var data=col1+"\n"+col2+"\n"+col3;
+		 alert('pop');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    
+                    let currentRow=$(this).closest("tr");
+                    let isadmin=currentRow.find("td:eq(3)").html();
+                    let id = currentRow.find("td:eq(0)").html();
+                    let uname = currentRow.find("td:eq(1)").html();
+
+                    document.getElementById('LblUsername').innerHTML = uname;
+                    hiddenId.setAttribute('value' , id);
+                    hiddenAdminId.setAttribute('value', id);
+                    hiddenRemoveAdminId.setAttribute('value', id);
+
+                    if(isadmin == "Y"){
+                        document.getElementById('makeAdmin').style.display='none';
+                        document.getElementById('removeAdmin').style.display='block';
+                    } else {
+                        document.getElementById('makeAdmin').style.display='block';
+                        document.getElementById('removeAdmin').style.display='none';
+                    }
+
+                }
+            });
+        });
+    </script>
+
+
+
+</head>
+<body>
+    <table id="example" class="display" style="width:80%">
+        <thead>
+        <tr>
+           <th>id</th>
+           <th>Username</th>
+           <th>Password</th>
+           <th>Is Admin?</th>
+        </tr>
+    </thead>
+        <% for (var i = 0; i < data.length; i++) { %>
+         <tr>
+           <td><%= data[i].id %></td>
+           <td><%= data[i].username %></td>
+           <td><%= data[i].password %></td>
+           <td><%= data[i].isAdmin %></td>
+         </tr>
+        <% } %>
+     </table>
+     <p>The selected user is currently <label id="LblUsername" ></label></p>
+     <p>The options available to you are:</p>
+     <form action="deleteUser" method="POST" id="deleteUser">
+         <input type="hidden" name="hiddenId" id="hiddenId">
+         <input type="text" name="test" id="test">
+         <button type="submit" id="deleteUserBtn">Delete User</button>
+     </form>
+     <form action="makeAdmin" method="POST" id="makeAdmin">
+        <input type="hidden" name="hiddenAdminId" id="hiddenAdminId">
+        <button type="submit" id="makeAdminBtn">Make Admin</button>
+    </form>
+    <form action="demoteAdmin" method="POST" id="removeAdmin">
+        <input type="hidden" name="hiddenRemoveAdminId" id="hiddenRemoveAdminId">
+        <button type="submit" id="removeAdminBtn">Remove Admin</button>
+    </form>
+     <!-- <script>function addRowHandlers(){
+         let rows = document.getElementById('example').rows;
+         for(i = 0; i < rows.length; i++){
+            rows[i].onclick = function (){
+                return function (){
+                    let id = this.cells[0].innerHTML;
+                    let uname = this.cells[1].innerHTML;
+                    let isadmin = this.cells[3].innerHTML;
+                    document.getElementById('LblUsername').innerHTML = uname;
+                    hiddenId.setAttribute('value' , id);
+                    hiddenAdminId.setAttribute('value', id);
+                    hiddenRemoveAdminId.setAttribute('value', id);
+                    test.setAttribute('value', isadmin);
+                    if(isadmin == "Y"){
+                        document.getElementById('makeAdmin').style.display='none';
+                        document.getElementById('removeAdmin').style.display='block';
+                    } else {
+                        document.getElementById('makeAdmin').style.display='block';
+                        document.getElementById('removeAdmin').style.display='none';
+                    }
+                };
+            } (rows[i]);
+         }
+     }
+     window.onload = addRowHandlers(); -->
+     <!-- </script> -->
+    
+
+</body>
+</html>

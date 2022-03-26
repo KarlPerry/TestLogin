@@ -1,0 +1,42 @@
+// $.post("testdelete.jsp", {
+//     id: element.attr('id');
+//   }
+  
+
+
+                  // res.cookie("username", enteredUsername);
+                // res.cookie("uid", uID);
+
+// const cookieparser = require("cookie-parser");
+// cookieParser middleware
+// app.use(cookieparser());
+
+// app.get('/testdb', (req, res) => {
+//     let tableName = 'MyNodeTable';
+//     client.query(`SELECT "isAdmin" FROM "${tableName}"`,
+//         (error, result) => {
+//             if (error) {
+//                 console.log(error);
+//                 res.status(400).send(error);
+//             }
+//             //res.status(200).send(result.rows);
+//             let isadmin = result.rows[0].toString();
+//             if(isadmin=='Y'){
+//                 console.log('matches');
+            
+//             } else {
+//                 console.log('no match'); 
+//             }
+//         });
+// })
+
+// app.post('/testdb', (request,res) => {
+//     let tableName = 'MyNodeTable';
+//     const uName = request.body.username;
+//     const uPass = request.body.password;
+//     client.query(`INSERT INTO "${tableName}" (username, password) VALUES 
+//     ('${uName}', '${uPass}')`,
+//     (err,result) => {
+//         res.send('OK');
+//     })
+// })

@@ -1,0 +1,16 @@
+<html>
+  <link href="css/style.css" rel="stylesheet">
+    <body>
+    <h1>Login</h1>
+    <form action="login" method="POST">
+      <label for="uname">Username: </label>
+      <input type="text" id="uname" name="uname"><br><br>
+      <label for="pword">Password: </label>
+      <input type="password" id="pword" name="pword"><br><br>
+      <input type="submit" id="submit">
+    </form>
+    <p>Click on the submit button to submit the form.</p>
+    <p>Not got an account....<a rel="nofollow" href="register">click here to register</a></p>
+    <p style="color:red;"><%=message%></p> 
+    </body>
+    </html>

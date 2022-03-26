@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <link href="css/style-home.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        $(document).ready(function () {
+            var table = $('#example').DataTable();
+            $('#example tbody').on('click', 'tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+        });
+    </script>
+</head>
+<body background-color: steelblue;>
+    <header>
+        <div class="container">
+     
+        <div class="mobile-togle col-md-12 col-sm-12 col-xs-12">
+          <nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+    <button type="button" id="hamburger" class="navbar-toggle x collapsed" data-toggle="collapse" data-target="#navbar-collapse-x">
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#top"></a>
+    </div>
+    
+    <div class="collapse navbar-collapse" id="navbar-collapse-x">
+    <ul class="nav navbar-nav navbar-right">
+    <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+            <a class="nav-link" href="profile">My Profile<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="admin">Admin</a>
+          </li>
+    
+          
+        </ul>
+    </ul>
+    </div><!-- .navbar-collapse -->
+    </nav>
+          </div>
+    
+          <div class="right_section col-md-5 col-xs-12">
+    
+    
+    
+    
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    
+    
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="profile">My Profile<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="admin">Admin</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="logOut">Logout</a>
+          </li>
+    
+          
+    
+        </ul>
+    
+      </div>
+    
+       </nav>
+       </div>
+    
+        </div>
+      </header>
+      <br>
+      <br>
+
+    <table id="example" class="display" style="width:80%">
+        <thead>
+        <tr>
+           <th>id</th><th>Username</th><th>Password</th><th>Admin</th><th>Admin</th>
+        </tr>
+    </thead>
+        <% for (var i = 0; i < data.length; i++) { %>
+         <tr>
+           <td><%= data[i].id %></td>
+           <td><%= data[i].username %></td>
+           <td><%= data[i].password %></td>
+           <td><%= data[i].isAdmin %></td>
+           <td><%= data[i].isadmin2 %></td>   
+         </tr>    
+
+        <% } %>
+     </table>
+     <br>
+     <br>
+    <p> The selected user is currently... <label id="lblUName"></label></p>
+    <p>The options available to you are</p>
+
+
+     <form action="makeAdmin" method="POST" id="isNotAdminForm">
+     <input type="hidden" name="hiddenID" id="hiddenID" />
+     <button type="submit" id="makeAdmin">Make Admin</button>
+    </form>
+
+    <form action="demoteAdmin" method="POST" id="isAdminForm">
+        <input type="hidden" name="hiddenID2" id="hiddenID2" />
+        <button type="submit" id="makeNotAdmin">Revoke Admin</button>
+       </form>
+
+    <form action="deleteUser" method="POST">
+        <input type="hidden" name="hiddenDelID" = id="hiddenDelID" />
+        <button type="submit" id="deleteUser">Delete User</button>
+       </form>
+
+     <script>
+    function addRowHandlers() {
+        var rows = document.getElementById("example").rows;
+        for (i = 0; i < rows.length; i++) {
+            rows[i].onclick = function(){ return function(){
+            let id = this.cells[0].innerHTML;
+            let uName = this.cells[1].innerText;
+            let isAdmin = this.cells[3].firstChild.nodeValue;
+            console.log(isAdmin);
+            document.getElementById('lblUName').innerHTML = uName;
+            hiddenID.setAttribute('value', id);
+            hiddenID2.setAttribute('value', id);
+            hiddenDelID.setAttribute('value', id);
+            if(isAdmin == 'Y'){
+                document.getElementById("makeAdmin").disabled = true; 
+                document.getElementById("makeNotAdmin").disabled = false; 
+                document.getElementById("isAdminForm").style.display="block";
+                document.getElementById("isNotAdminForm").style.display="none";
+            } else {
+                document.getElementById("makeAdmin").disabled = false;
+                document.getElementById("makeNotAdmin").disabled = true;
+                document.getElementById("isAdminForm").style.display="none";
+                document.getElementById("isNotAdminForm").style.display="block";
+               }
+        };}(rows[i]);
+    }
+}
+window.onload = addRowHandlers();
+
+
+  function reply_click(clicked_id)
+  {
+      alert(clicked_id);
+  }
+
+     </script>
+         <script src="js/jquery.min.js"></script>
+         <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
