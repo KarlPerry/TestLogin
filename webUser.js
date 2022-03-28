@@ -1,9 +1,9 @@
 const client  = require('./database.js');
 
-const createUser = ({username, password}) => {
+const createUser = ({username, password, result}) => {
     let tableName = 'MyNodeTable';
     return client.query(
-        `INSERT INTO"${tableName}" (username, password) VALUES ('${username}', '${password}')`
+        `INSERT INTO"${tableName}" (username, password, password2) VALUES ('${username}', '${password}', '${result}')`
     );
    }
 
@@ -26,7 +26,7 @@ const checkUsernameAndPassword = (enteredUsername, password) => {
     let tableName = 'MyNodeTable';
     let columnName = 'username';
     return client.query(
-        `SELECT id, password, "isAdmin" FROM "${tableName}" WHERE ${columnName} = '${enteredUsername}'`
+        `SELECT id, password, password2, "isAdmin" FROM "${tableName}" WHERE ${columnName} = '${enteredUsername}'`
         );
 }
 

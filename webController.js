@@ -1,13 +1,19 @@
 const { createUser, getEditProfileDetails, checkUsernameExists, checkUsernameAndPassword, updateUsersProfile, deleteUserFromDB, getAdminData, makeAdminInDB, makeUserInDB } = require('./webUser');
+const { encryptPassword, checkEncryptedPassword } = require('./password');
 const user = require('./user.js');
 let myUser = new user;
    
 const newUser = (req,res) => {
     let username = req.body.uname;
     let password = req.body.pword;
-    createUser({username,password})
-    .then(() => res.render('login', {message: 'User Account Successfully Created. Please login!'})) 
-    .catch(() => res.status(500).send('error'));
+    encryptPassword(password)
+    .then(result => {
+        createUser({username,password, result})
+        .then(() => res.render('login', {message: 'User Account Successfully Created. Please login!'})) 
+        .catch(() => res.status(500).send('error'));
+        })
+        .catch(() => res.status(500).send('error'));
+
    
     }
 
@@ -25,7 +31,7 @@ const editProfile = (req, res) => {
 
 const processLogon = (req, res) => {
     let enteredUsername = req.body.uname;
-    let p = req.body.pword;  
+    let p = req.body.pword; 
     checkUsernameExists(enteredUsername)
     .then(result => {
         if(result.rowCount == 0) {
@@ -33,19 +39,28 @@ const processLogon = (req, res) => {
         } else {
             checkUsernameAndPassword(enteredUsername, p)
             .then(result => {
-               if(result.rows[0].password === p) {
-                 myUser.setUsername = enteredUsername;
-                 myUser.setPassword = result.rows[0].password;
-                 myUser.setIsAdmin = result.rows[0].isAdmin;
-                 myUser.setUid = result.rows[0].id;
-                res.render('welcome', {message: myUser.getUsername});
-            } else {
-                res.render('login', {message: 'Invalid Username or Password'});
-            }
+                 let enteredUserPassword = p;
+                 let encyptedPass = result.rows[0].password2;
+                checkEncryptedPassword({enteredUserPassword, encyptedPass})
+                .then(() => res.status(200).send('OK - Enc'))
+                   // console.log('result is ' + passCheck);
+                    // if(passCheck === true) {
+                    //           myUser.setUsername = enteredUsername;
+                    //           myUser.setPassword = result.rows[0].password;
+                    //           myUser.setIsAdmin = result.rows[0].isAdmin;
+                    //           myUser.setUid = result.rows[0].id;
+                    //          res.render('welcome', {message: myUser.getUsername});
+                    //      } else {
+                    //          res.render('login', {message: 'Invalid Username or Password'});
+                    //      }
+               // })
+                .catch(() => res.status(500).send('error - Enc'));
+            //  end Enc Checks  
             })
-            .catch(() => res.status(500).send('error'));
-        }
-    })
+            .catch(() => res.status(500).send('error - Overall'));
+            //end username get
+        } // else nuser found
+    }) // check username .then
     .catch(() => res.status(500).send('error2'));
 }
 
